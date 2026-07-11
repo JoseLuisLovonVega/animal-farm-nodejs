@@ -61,4 +61,4 @@ jobs:
           # Docker Hub + GitHub Container Registry image tags
           tags: |
             joslui/animal-farm-nodejs:latest
-            ghcr.io/JoseLuisLovonVega/animal-farm-nodejs:latest
+            ghcr.io/joseluislovonvega/animal-farm-nodejs:latest
