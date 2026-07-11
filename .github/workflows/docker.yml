@@ -57,6 +57,8 @@ jobs:
           context: .              # Use the repo root as the build context
           file: ./Dockerfile      # Path to the Dockerfile
           push: true              # Push the image after building (false would only build locally)
-          tags: |                 # Image names/tags to publish (one per line)
-            joslui/animal-farm-nodejs:latest           # Docker Hub
-            ghcr.io/JoseLuisLovonVega/animal-farm-nodejs:latest # GitHub Container Registry
+          # Image names/tags to publish (one per line; no inline comments — they become part of the tag)
+          # Docker Hub + GitHub Container Registry image tags
+          tags: |
+            joslui/animal-farm-nodejs:latest
+            ghcr.io/joseluislovonvega/animal-farm-nodejs:latest
