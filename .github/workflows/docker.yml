@@ -1,43 +1,62 @@
+# Display name shown in the GitHub Actions tab
 name: Publish Docker image
 
+# When this workflow runs
 on:
   push:
     branches:
-      - main
+      - main  # Only trigger on pushes to the main branch
 
+# A workflow is made up of one or more jobs
 jobs:
   build-and-push:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Use a fresh Ubuntu virtual machine for each run
+
+    permissions:
+      contents: read
+      packages: write
+
     steps:
+      # Download the repository code into the runner
       -
         name: Checkout
         uses: actions/checkout@v2
+
+      # Enable QEMU for cross-platform builds (e.g. building ARM images on x86)
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
+
+      # Install Docker Buildx for advanced build features (multi-platform, caching)
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
+
+      # Authenticate with Docker Hub so we can push images there
       -
         name: Login to DockerHub
         uses: docker/login-action@v1
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}  # Stored in repo Settings > Secrets
+          password: ${{ secrets.DOCKERHUB_TOKEN }}     # Docker Hub access token (not your password)
+
+      # Authenticate with GitHub Container Registry (ghcr.io)
       -
         name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GHRC_TOKEN }}
+          username: ${{ github.repository_owner }}  # Your GitHub username or org name
+          password: ${{ secrets.GITHUBTOKEN }}       # PAT with write:packages scope
+
+      # Build the Docker image from the Dockerfile and push it to both registries
       -
         name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: |
-            joslui/animal-farm-nodejs:latest
-            ghcr.io/joslui/animal-farm-nodejs:latest
+          context: .              # Use the repo root as the build context
+          file: ./Dockerfile      # Path to the Dockerfile
+          push: true              # Push the image after building (false would only build locally)
+          tags: |                 # Image names/tags to publish (one per line)
+            joslui/animal-farm-nodejs:latest           # Docker Hub
+            ghcr.io/joslui/animal-farm-nodejs:latest # GitHub Container Registry
