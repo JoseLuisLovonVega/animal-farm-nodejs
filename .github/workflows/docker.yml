@@ -47,7 +47,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}  # Your GitHub username or org name
-          password: ${{ secrets.GITHUBTOKEN }}       # PAT with write:packages scope
+          password: ${{ secrets.GHRC_TOKEN }}       # PAT with write:packages scope
 
       # Build the Docker image from the Dockerfile and push it to both registries
       -
@@ -59,4 +59,4 @@ jobs:
           push: true              # Push the image after building (false would only build locally)
           tags: |                 # Image names/tags to publish (one per line)
             joslui/animal-farm-nodejs:latest           # Docker Hub
-            ghcr.io/joslui/animal-farm-nodejs:latest # GitHub Container Registry
+            ghcr.io/JoseLuisLovonVega/animal-farm-nodejs:latest # GitHub Container Registry
