@@ -8,11 +8,11 @@ on:
       - main  # Only trigger on pushes to the main branch
 
 # A workflow is made up of one or more jobs
-jobs:
-  permissions:
+permissions:
     contents: read
     packages: write
     
+jobs:
   build-and-push:
     runs-on: ubuntu-latest  # Use a fresh Ubuntu virtual machine for each run
 
